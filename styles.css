@@ -1,0 +1,202 @@
+/* ------------------------- ОБЩИЕ ПЕРЕМЕННЫЕ ------------------------- */
+:root{
+  /* Цвет подложки карточки */
+  --card-bg: rgba(255,255,255,.80);
+  --card-border: rgba(255,255,255,.35);
+  --shadow: 0 20px 60px rgba(0,0,0,.15);
+  --accent: #6c8cff;
+
+  /* Цвета линий и заливок для "Есть" и "Хочу" */
+  --cur-line:#506EFF;
+  --cur-fill: rgba(125,164,255,.26);
+  --want-line:#FF69B4;
+  --want-fill: rgba(255,105,180,.10);
+}
+
+/* ------------------------- ФОН СТРАНИЦЫ ------------------------- */
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:#1d2433;
+
+  /* Градиентный фон "а-ля Notion" */
+  background:
+    radial-gradient(1200px 700px at 10% -10%, #e3f2ff 0%, transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, #ffe8f1 0%, transparent 55%),
+    radial-gradient(800px 500px at 0% 100%, #e9ffe9 0%, transparent 50%),
+    linear-gradient(180deg, #f7f9fc 0%, #f1f5ff 100%);
+}
+
+/* Обёртка, чтобы блок стоял по центру экрана */
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+
+/* Основная "карточка" приложения */
+.card{
+  width:min(1200px,96vw);
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+  padding:22px;
+}
+
+/* Шапка: заголовок + кнопки */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px dashed rgba(0,0,0,.08);
+  padding-bottom:12px;
+  gap:12px;
+}
+
+/* Блок кнопок справа */
+.buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* Общий стиль всех кнопок */
+button{
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  border-radius:12px;
+  padding:10px 14px;
+  cursor:pointer;
+}
+
+/* Акцентная кнопка "Обновить" */
+button.primary{
+  background:var(--accent);
+  color:#fff;
+  border-color:transparent;
+}
+
+/* ------------------------- ДВЕ КОЛОНКИ: ЛЕВАЯ + ПРАВАЯ ------------------------- */
+
+.grid{
+  display:grid;
+  /* Левая панель уже, правая с колесом шире */
+  grid-template-columns:0.40fr 1.15fr;
+  gap:18px;
+  margin-top:16px;
+}
+
+/* На узких экранах колонки становятся одна под другой */
+@media (max-width:960px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Общий стиль белых панелей слева и справа */
+.panel{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:18px;
+  padding:14px;
+}
+
+/* ------------------------- ЛЕВАЯ ПАНЕЛЬ: СПИСОК ОБЛАСТЕЙ ------------------------- */
+
+/* Заголовок: пустая колонка + "Есть" + "Хочу" */
+.hdr{
+  display:grid;
+  /* 1-я колонка — текст области; 2 и 3 — узкие поля */
+  grid-template-columns:minmax(0,0.9fr) 50px 50px;
+  gap:6px;
+  font-size:12px;
+  color:#556;
+  margin-bottom:4px;
+}
+
+/* Контейнер для всех строк с полями */
+.inputs{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:6px;
+}
+
+/* Одна строка: название области + поле "Есть" + поле "Хочу" */
+.row{
+  display:grid;
+  grid-template-columns:minmax(0,0.9fr) 80px 80px;
+  gap:6px;
+  align-items:center;
+}
+
+/* Адаптив: на очень узких экранах уменьшаем ширину полей */
+@media (max-width:720px){
+  .hdr{
+    grid-template-columns:minmax(0,1fr) 70px 70px;
+  }
+  .row{
+    grid-template-columns:minmax(0,1fr) 70px 70px;
+  }
+}
+
+/* Внешний вид полей "Есть" и "Хочу" */
+.row input{
+  border:1px solid #dde3ee;
+  border-radius:10px;
+  padding:6px 8px;      /* высота/ширина за счёт внутренних отступов */
+  font-size:13px;       /* размер шрифта в полях */
+  width:100%;           /* поле занимает всю ширину своей колонки (80px/70px) */
+}
+
+/* Текст названий областей слева */
+.label{
+  font-size:13px;
+}
+
+/* ------------------------- ПРАВАЯ ПАНЕЛЬ: SVG-КОЛЕСО ------------------------- */
+
+.chart-wrap{
+  height:560px;   /* высота блока с колесом */
+}
+
+/* Сам SVG растягиваем на всю панель */
+svg{
+  width:100%;
+  height:100%;
+  touch-action:none;  /* отключаем "жесты" браузера, чтобы перетаскивание было корректным */
+}
+
+/* Курсор над маркером */
+.handle{
+  cursor:grab;
+}
+
+/* Курсор во время перетаскивания */
+.dragging .handle{
+  cursor:grabbing;
+}
+
+/* ------------------------- ЛЕГЕНДА ПОД ПОЛЯМИ ------------------------- */
+
+.legend{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:8px;
+  font-size:11px;
+  color:#445;
+}
+
+/* Маленький цветной кружок в легенде */
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  display:inline-block;
+  border:1px solid rgba(0,0,0,.1);
+  margin-right:4px;
+}
